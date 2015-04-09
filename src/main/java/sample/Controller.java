@@ -123,13 +123,31 @@ public class Controller {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(main.getPrimaryStage());
 
-        Man man = Man.load(file.getAbsolutePath());
-        mans.set(number, man);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file.getAbsolutePath());
+        } catch (FileNotFoundException ex) {
+            System.out.println("Файл "+file.getAbsolutePath()+"не найден");
+        }
+        ObjectInputStream ois = null;
+        try{
+            ois = new ObjectInputStream(fis);
+            mans = (ArrayList<Man>) ois.readObject();
+            ois.close();
+        }catch (ClassNotFoundException ex){
+            System.out.println("Из фаила находящегося по адресу "
+                    +file.getAbsolutePath()+
+                    " не удалось прочитать объект типа ArrayList<Man>");
+        }catch (IOException ex){
+            System.out.println("Ошибка чтения из файла"+file.getAbsolutePath());
+        }
+        try {
+            fis.close();
+        } catch (IOException e) {
+            System.out.println("Ошибка закрытия fis");
+        }
+        number = 0;
         showMan(number);
-
-        //TODO
-        //Изменить этот метод так что-бы он загружал не одного текущего человека из файла,
-        // а весь списочный массив mans
     }
 
     public void setMain(Main main){
