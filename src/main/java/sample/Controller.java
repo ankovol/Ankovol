@@ -92,12 +92,26 @@ public class Controller {
         );
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(main.getPrimaryStage());
-        mans.get(number).save(file.getAbsolutePath());
 
-        //TODO
-        //Изменить этот метод так что-бы он сохранял не одного текущего человека в файл,
-        // а весь списочный массив mans
-
+        FileOutputStream fos = null;
+        try{
+            fos = new FileOutputStream(file.getAbsolutePath());
+        }catch (FileNotFoundException ex){
+            System.out.println("File not found");
+        }
+        ObjectOutputStream oos = null;
+        try{
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(mans);
+            oos.close();
+        } catch (IOException ex) {
+            System.out.println("Error");
+        }
+        try {
+            fos.close();
+        }catch (IOException ex) {
+            System.out.println("Error");
+        }
     }
 
     @FXML
