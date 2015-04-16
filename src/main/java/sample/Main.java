@@ -2,12 +2,15 @@ package sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -40,6 +43,22 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+            Statement statement = conn.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS Company " +
+                    "(id        INTEGER     PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    " name      TEXT        NOT NULL," +
+                    " age       INTEGER     NOT NULL)";
+            statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         launch(args);
     }
 
