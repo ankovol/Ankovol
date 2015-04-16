@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -148,6 +149,13 @@ public class Controller {
         }
         number = 0;
         showMan(number);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Данные загружены");
+        alert.setHeaderText(null);
+        alert.setContentText("Данные успешно загружены");
+        alert.show();
+
     }
 
     public void setMain(Main main){
