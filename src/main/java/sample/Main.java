@@ -45,6 +45,20 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         //создаем таблицу
+        crate();
+
+        //внесем данные
+        insert("Петя", 18);
+
+        //запускаем графический интерфейс
+        launch(args);
+    }
+
+    public Stage getPrimaryStage(){
+         return primaryStage;
+    }
+
+    private static void crate() {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:test.db");
@@ -61,16 +75,6 @@ public class Main extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        //внесем данные
-        insert("Петя", 18);
-
-        //запускаем графический интерфейс
-        launch(args);
-    }
-
-    public Stage getPrimaryStage(){
-         return primaryStage;
     }
 
     private static void insert (String name, int age){
