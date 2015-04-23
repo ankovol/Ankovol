@@ -43,6 +43,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
+        //создаем таблицу
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:test.db");
@@ -50,7 +52,7 @@ public class Main extends Application {
             String sql = "CREATE TABLE IF NOT EXISTS Company " +
                     "(id        INTEGER     PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     " name      TEXT        NOT NULL," +
-                    " age       INTEGER     NOT NULL)";
+                    " age       INTEGER     NOT NULL);";
             statement.executeUpdate(sql);
             statement.close();
             conn.close();
@@ -59,10 +61,32 @@ public class Main extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //внесем данные
+        insert("Петя", 18);
+
+        //запускаем графический интерфейс
         launch(args);
     }
 
     public Stage getPrimaryStage(){
          return primaryStage;
+    }
+
+    private static void insert (String name, int age){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO Company (name,age)" +
+                    "VALUES ('" + name + "', " + age + ");";
+            statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
